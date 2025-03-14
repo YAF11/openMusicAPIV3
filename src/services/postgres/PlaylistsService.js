@@ -129,7 +129,7 @@ class PlaylistsService {
 
     // Tambahkan lagu ke playlist
     const query = {
-      text: 'INSERT INTO song_playlists (id, playlist_id, song_id) VALUES ($1, $2, $3) RETURNING id',
+      text: 'INSERT INTO playlist_songs (id, playlist_id, song_id) VALUES ($1, $2, $3) RETURNING id',
       values: [id, playlistId, songId],
     };
     const result = await this._pool.query(query);
@@ -142,9 +142,9 @@ class PlaylistsService {
   async getSongsInPlaylist(playlistId) {
     const query = {
       text: `SELECT songs.id, songs.title, songs.performer 
-      FROM song_playlists
-      JOIN songs ON song_playlists.song_id = songs.id
-      WHERE song_playlists.playlist_id = $1
+      FROM playlist_songs
+      JOIN songs ON playlist_songs.song_id = songs.id
+      WHERE playlist_songs.playlist_id = $1
       ORDER BY songs.title ASC`,
       values: [playlistId],
     };
@@ -159,7 +159,7 @@ class PlaylistsService {
 
   async deleteSongFromPlaylist(playlistId, songId) {
     const query = {
-      text: 'DELETE FROM song_playlists WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
+      text: 'DELETE FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
       values: [playlistId, songId],
     };
 
@@ -189,7 +189,7 @@ class PlaylistsService {
       // console.log(playlistResult.rows[0]);
 
       const query = {
-        text: `INSERT INTO song_playlist_activities (id, playlist_id, song_id, user_id, action, time) 
+        text: `INSERT INTO playlist_songs_activities (id, playlist_id, song_id, user_id, action, time) 
         VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
         values: [id, playlistId, songId, userId, action, time],
       };
@@ -213,7 +213,7 @@ class PlaylistsService {
   async getPlaylistActivities(playlistId) {
     const query = {
       text: `SELECT users.username, songs.title, a.action, a.time
-      FROM song_playlist_activities a
+      FROM playlist_songs_activities a
       JOIN songs ON a.song_id = songs.id
       JOIN users ON a.user_id = users.id
       WHERE a.playlist_id = $1
