@@ -124,7 +124,7 @@ class PlaylistsService {
     const songResult = await this._pool.query(songQuery);
 
     if (!songResult.rows.length) {
-      throw new NotFoundError('Song tidak ditemukan');
+      throw new NotFoundError('Lagu tidak ditemukan');
     }
 
     // Tambahkan lagu ke playlist
@@ -135,7 +135,7 @@ class PlaylistsService {
     const result = await this._pool.query(query);
 
     if (!result.rows.length) {
-      throw new InvariantError('Song gagal ditambahkan ke playlist');
+      throw new InvariantError('Lagu gagal ditambahkan ke playlist');
     }
   }
 
@@ -166,7 +166,7 @@ class PlaylistsService {
     const result = await this._pool.query(query);
 
     if (!result.rows.length) {
-      throw new InvariantError('Song gagal dihapus dari playlist');
+      throw new InvariantError('Lagu gagal dihapus dari playlist');
     }
   }
 
