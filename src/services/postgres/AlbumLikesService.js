@@ -29,9 +29,9 @@ class AlbumLikesService {
       values: [albumId, userId],
     };
 
-    const albumLikeresult = await this._pool.query(albumLikeQuery);
+    const albumLikeResult = await this._pool.query(albumLikeQuery);
 
-    if (albumLikeresult.rows.length) {
+    if (albumLikeResult.rows.length) {
       throw new InvariantError('Gagal menyukai album yang sama');
     }
 
